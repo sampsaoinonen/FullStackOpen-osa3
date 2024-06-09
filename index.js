@@ -5,6 +5,7 @@ const morgan = require('morgan')
 app.use(express.json())
 
 morgan.token('data', request => JSON.stringify(request.body))
+app.use(morgan('tiny'))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
 
@@ -68,34 +69,34 @@ app.delete('/api/persons/:id', (req, res) => {
     res.status(204).end()
   })
 
-  const randomizeId = () =>  Math.floor(Math.random() * 100000000000)
+const randomizeId = () =>  Math.floor(Math.random() * 100000000000)
 
-  app.post('/api/persons', (req, res) => {
-    const body = req.body
-    
-    if (!body.name | body.number) {
-        return res.status(400).json({ 
-            error: 'name or number missing' 
-        })
-      }
-    
-    if (persons.find(person => person.name === body.name)) {
-        return res.status(400).json({ 
-            error: 'name must be unique'
-        })
+app.post('/api/persons', (req, res) => {
+  const body = req.body
+  
+  if (!body.name || !body.number) {
+      return res.status(400).json({ 
+          error: 'name or number missing' 
+      })
     }
-    
-    const person = {
+  
+  if (persons.find(person => person.name === body.name)) {
+      return res.status(400).json({ 
+          error: 'name must be unique'
+      })
+  }
+  
+  const person = {
+    id: randomizeId(),
     name: body.name,
     number: body.number,              
-    id: randomizeId(),
     }
 
-    persons = persons.concat(person)
+  persons = persons.concat(person)
 
-    res.json(person)
-    
-    })
+  res.json(person)
+  
+  })
 
 const PORT = 3001
 app.listen(PORT, () => {
