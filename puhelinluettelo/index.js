@@ -88,6 +88,22 @@ app.post('/api/persons', (req, res) => {
           error: 'name must be unique'
       })
   }
+
+app.put('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id)
+  const body = req.body
+
+  const person = persons.find(person => person.id === id)
+  if (!person) {
+      return res.status(404).json({ error: 'person not found' })
+  }
+
+  const updatedPerson = { ...person, number: body.number }
+
+  persons = persons.map(p => p.id !== id ? p : updatedPerson)
+
+  res.json(updatedPerson)
+})
   
   const person = {
     id: randomizeId(),
