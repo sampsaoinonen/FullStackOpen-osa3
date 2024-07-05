@@ -78,16 +78,27 @@ app.post('/api/persons', (req, res) => {
   const body = req.body
   
   if (!body.name || !body.number) {
-      return res.status(400).json({ 
-          error: 'name or number missing' 
-      })
-    }
+    return res.status(400).json({ 
+      error: 'name or number missing' 
+    })
+  }
   
   if (persons.find(person => person.name === body.name)) {
-      return res.status(400).json({ 
-          error: 'name must be unique'
-      })
+    return res.status(400).json({ 
+      error: 'name must be unique'
+    })
   }
+  
+  const person = {
+    id: randomizeId(),
+    name: body.name,
+    number: body.number              
+  }
+
+  persons = persons.concat(person)
+
+  res.json(person)
+})
 
 app.put('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
@@ -95,7 +106,7 @@ app.put('/api/persons/:id', (req, res) => {
 
   const person = persons.find(person => person.id === id)
   if (!person) {
-      return res.status(404).json({ error: 'person not found' })
+    return res.status(404).json({ error: 'person not found' })
   }
 
   const updatedPerson = { ...person, number: body.number }
@@ -104,19 +115,6 @@ app.put('/api/persons/:id', (req, res) => {
 
   res.json(updatedPerson)
 })
-  
-  const person = {
-    id: randomizeId(),
-    name: body.name,
-    number: body.number,              
-    }
-
-  persons = persons.concat(person)
-
-  res.json(person)
-  
-  })
-
   
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
