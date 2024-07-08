@@ -118,9 +118,14 @@ const App = () => {
             }, 5000)
           setNewName('')
           setNewNumber('')
+        }).catch(error => {
+          setColor('red')
+          setMessage(`Error: ${error.response.data.error}`)
+          setTimeout(() => {
+            setMessage(null)
+          }, 5000)
         })
     }
-      
   }
 
   const deletePerson = person => {
