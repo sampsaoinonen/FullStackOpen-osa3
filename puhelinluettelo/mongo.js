@@ -23,30 +23,30 @@ const personSchema = new mongoose.Schema({
 const Person = mongoose.model('Person', personSchema)
 
 if (!name && !number)  {
-    console.log('phonebook:');
-    Person.find({}).then(result => {
-      result.forEach(person => {
-        console.log(person.name, person.number)
-      })
-      mongoose.connection.close();
-    }).catch(err => {
-      console.error('Error retrieving persons', err);
-      mongoose.connection.close();
-    });
-  } else if (name && number) {
-    const person = new Person({
-      name: name,
-      number: number,
+  console.log('phonebook:')
+  Person.find({}).then(result => {
+    result.forEach(person => {
+      console.log(person.name, person.number)
     })
+    mongoose.connection.close()
+  }).catch(err => {
+    console.error('Error retrieving persons', err)
+    mongoose.connection.close()
+  })
+} else if (name && number) {
+  const person = new Person({
+    name: name,
+    number: number,
+  })
 
-    person.save().then(result => {
-      console.log('person saved!')
-      mongoose.connection.close()
-    }).catch(err => {
-      console.error('Error saving person', err);
-      mongoose.connection.close()
-    })}
-    else {
-      console.log('Name or number missing!')
-      mongoose.connection.close()
-    }
+  person.save().then(() => {
+    console.log('person saved!')
+    mongoose.connection.close()
+  }).catch(err => {
+    console.error('Error saving person', err)
+    mongoose.connection.close()
+  })}
+else {
+  console.log('Name or number missing!')
+  mongoose.connection.close()
+}

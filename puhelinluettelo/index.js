@@ -14,7 +14,7 @@ app.use(morgan('tiny'))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
 app.get('/', (req, res) => {
-    res.send('<h1>Hello World!</h1>')
+  res.send('<h1>Hello World!</h1>')
 })
 
 app.get('/info', (req, res, next) => {
@@ -42,9 +42,9 @@ app.get('/api/persons/:id', (req, res, next) => {
 
 app.delete('/api/persons/:id', (req, res, next) => {
   Person.findByIdAndDelete(req.params.id)
-  .then(result => {
-    res.status(204).end()
-  }).catch(error => next(error))
+    .then(() => {
+      res.status(204).end()
+    }).catch(error => next(error))
 })
 
 app.post('/api/persons', (req, res, next) => {
@@ -52,14 +52,14 @@ app.post('/api/persons', (req, res, next) => {
 
   Person.findOne({ name: body.name }).then(existingPerson => {
     if (existingPerson) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         error: 'name must be unique'
       })
     }
-    
+
     const person = new Person({
       name: body.name,
-      number: body.number              
+      number: body.number
     })
 
     person.save().then(savedPerson => {
