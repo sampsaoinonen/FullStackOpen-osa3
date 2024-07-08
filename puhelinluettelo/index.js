@@ -47,8 +47,6 @@ app.delete('/api/persons/:id', (req, res, next) => {
   }).catch(error => next(error))
 })
 
-const randomizeId = () =>  Math.floor(Math.random() * 100000000000)
-
 app.post('/api/persons', (req, res, next) => {
   const body = req.body
   console.log(body)
