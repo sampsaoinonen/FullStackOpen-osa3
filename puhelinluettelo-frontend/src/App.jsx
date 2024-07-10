@@ -97,12 +97,16 @@ const App = () => {
           })
           .catch(error => {
             setColor('red')
-            setMessage(`Information of ${personObject.name} has already been removed from the server`)
+            if (error.response && error.response.data && error.response.data.error) {
+              setMessage(`Error: ${error.response.data.error}`)
+            } else {
+              setMessage(`Information of ${personObject.name} has already been removed from the server`)
+              setPersons(persons.filter(p => p.name !== personObject.name))
+            }
             setTimeout(() => {
               setMessage(null)
             }, 5000)
-            setPersons(persons.filter(p => p.name !== personObject.name))
-          })        
+          })
       
     }}
                 

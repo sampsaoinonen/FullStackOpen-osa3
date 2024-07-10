@@ -69,17 +69,28 @@ app.post('/api/persons', (req, res, next) => {
 })
 
 
-app.put('/api/persons/:id', (req, res, next) => {
+app.put('/api/persons/:id', async (req, res, next) => {
   const body = req.body
 
-  const person = {
-    name: body.name,
-    number: body.number,
-  }
+  try {
+    await Person.validate({
+      name: body.name,
+      number: body.number,
+    })
+    const updatedPerson = await Person.findByIdAndUpdate(req.params.id, { number: body.number }, { new: true, runValidators: true, context: 'query' })
 
-  Person.findByIdAndUpdate(req.params.id, person, { new: true }).then(updatedPerson => {
+    if (!updatedPerson) {
+      return res.status(404).end()
+    }
+
     res.json(updatedPerson)
-  }).catch(error => next(error))
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ error: error.message })
+    } else {
+      next(error)
+    }
+  }
 })
 
 const errorHandler = (error, request, response, next) => {
