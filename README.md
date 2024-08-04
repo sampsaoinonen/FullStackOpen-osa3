@@ -1,6 +1,6 @@
-# Fullstack Open 2023 - Part 3
+# Fullstack Open - Part 3
 
-This repository contains my solutions for the exercises in Part 3 of the [Fullstack Open 2023](https://fullstackopen.com/en/part3) course.
+This repository contains my solutions for the exercises in Part 3 of the [Fullstack Open](https://fullstackopen.com/en/part3) course.
 
 ## Overview
 
